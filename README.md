@@ -1,29 +1,55 @@
 # EthStorage-bot
 
+**EthStorage-bot** is an automated script designed to monitor EthStorage nodes. It sends alerts to Telegram when it detects that the number of successful mining operations exceeds 0 or when the mining power falls below 100%.
 
 ## Features
 
-## Prerequesites
+Sends an alert to Telegram when the number of successful mining operations (**succeeded**) is greater than 0.
+Sends an alert to Telegram when the **mining power** is less than 100%.
 
-1. using docker
-2. install jq and curl
+## Prerequisites
 
-```
+Before using EthStorage-bot, please ensure the following conditions are met:
+
+1. Your node is set up through Docker.
+2. `jq` and `curl` are installed on your system.
+
+To install `jq` and `curl`:
+
+```bash
 apt update
 apt install jq curl
 ```
 
-## Run
+## Setup
 
-```
+First, download this repository, copy the sample configuration file to create your actual configuration file:
+
+```bash
+git clone https://github.com/AnyNodes/EthStorage-bot.git
+cd EthStorage-bot
 cp config_sample.json config.json
 ```
 
-```
+Next, edit `config.json` to include your Telegram bot token, chat ID, and any other relevant configuration.
+Ensure the script is executable:
+
+```bash
 chmod +x ./es_bot.sh
 ```
 
-## Cron
+## Cron Job
 
+To run `EthStorage-bot` at regular intervals, you can add it to your `crontab`. Here's an example configuration to execute the script every hour:
+
+**# Make sure to replace /path/to/EthStorage-bot/es_bot.sh and /path/to/crontab.log with the actual paths on your system.**
+
+```bash
+10 * * * * /bin/bash /path/to/EthStorage-bot/es_bot.sh > /path/to/crontab.log 2>&1
 ```
-```
+
+This setup will run the es_bot.sh script at the 10th minute of every hour, redirecting output to a specified log file.
+
+## Support
+
+If you need any support, please create github issue, or come to our [AnyNode telegram channel](https://t.me/AnyNodes).
