@@ -1,4 +1,6 @@
 config.json
+mining_stats.log
+crontab.log
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
