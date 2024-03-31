@@ -1,0 +1,6 @@
+{
+  "bot_token": "your_bot_token",
+  "chat_id": "your_chat_id",
+  "node_name": "your_node_name",
+  "check_mining_power": true
+}
