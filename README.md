@@ -11,15 +11,16 @@ Sends an alert to Telegram when the **mining power** is less than 100%.
 
 Before using EthStorage-bot, please ensure the following conditions are met:
 
-1. Your node is set up through Docker.
-2. `jq` and `curl` are installed on your system.
+1. Your node is set up through [Docker](https://docs.ethstorage.io/storage-provider-guide/tutorials#from-a-docker-image).
+2. You have telegram bot token and chat_id. You can get them for free. Google how to.
+3. `jq` and `curl` are installed on your system.
 
-To install `jq` and `curl`:
-
-```bash
-apt update
-apt install jq curl
-```
+    To install `jq` and `curl`:
+    
+    ```bash
+    apt update
+    apt install jq curl
+    ```
 
 ## Setup
 
@@ -45,11 +46,16 @@ To run `EthStorage-bot` at regular intervals, you can add it to your `crontab`. 
 **# Make sure to replace /path/to/EthStorage-bot/es_bot.sh and /path/to/crontab.log with the actual paths on your system.**
 
 ```bash
-10 * * * * /bin/bash /path/to/EthStorage-bot/es_bot.sh > /path/to/crontab.log 2>&1
+10 * * * * /bin/bash /path/to/EthStorage-bot/es_bot.sh >> /path/to/crontab.log 2>&1
 ```
 
 This setup will run the es_bot.sh script at the 10th minute of every hour, redirecting output to a specified log file.
 
+## Logs
+
+- Mining stats of each run: /path/to/mining_stats.log
+- Crontab log: /path/to/crontab.log
+
 ## Support
 
-If you need any support, please create github issue, or come to our [AnyNode telegram channel](https://t.me/AnyNodes).
+If you need any support or have questions, please create github issue, or come to our [AnyNode telegram channel](https://t.me/AnyNodes).
