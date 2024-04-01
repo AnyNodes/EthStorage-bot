@@ -37,7 +37,9 @@ log_and_send_message() {
 
 # Check docker logs
 docker logs "$container_name" --since 5m | while read -r line; do
+
     if [[ "$line" == *"Mining stats"* && "$stats_message_sent" -eq 0 ]]; then
+        echo "$line" >> "$log_file"  # Log "Mining stats" lines
         succeeded=$(echo "$line" | awk -F'succeeded=' '{print $2}' | awk '{print $1}')
         if [[ "$succeeded" -gt 0 ]]; then
             message="Mining succeeded count is greater than 0. Succeeded: $succeeded"
@@ -45,10 +47,13 @@ docker logs "$container_name" --since 5m | while read -r line; do
             log_and_send_message "$message"
             stats_message_sent=1
         fi
-    elif [[ "$line" == *"Mining tasks timed out"* && "$timeout_message_sent" -eq 0 && "$check_mining_power" == "true" ]]; then
-        message="Mining power is not 100%"
-        [[ -n "$node_name" ]] && message="Node $node_name: $message"
-        log_and_send_message "$message"
-        timeout_message_sent=1
+    elif [[ "$line" == *"Mining tasks timed out"* ]]; then
+        echo "$line" >> "$log_file"  # Log "Mining tasks timed out" lines
+        if [[ "$timeout_message_sent" -eq 0 && "$check_mining_power" == "true" ]]; then
+            message="Mining power is not 100%"
+            [[ -n "$node_name" ]] && message="Node $node_name: $message"
+            log_and_send_message "$message"
+            timeout_message_sent=1
+        fi
     fi
 done
