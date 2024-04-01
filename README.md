@@ -24,7 +24,7 @@ Before using EthStorage-bot, please ensure the following conditions are met:
 
 ## Setup
 
-First, download this repository, copy the sample configuration file to create your actual configuration file:
+1. Download this repository, copy the sample configuration file to create your actual configuration file:
 
 ```bash
 git clone https://github.com/AnyNodes/EthStorage-bot.git
@@ -32,8 +32,11 @@ cd EthStorage-bot
 cp config_sample.json config.json
 ```
 
-Next, edit `config.json` to include your Telegram bot token, chat ID, and any other relevant configuration.
-Ensure the script is executable:
+2. Edit `config.json` to include your Telegram bot token, chat ID, and any other relevant configuration.
+   - `node_name`: in case you have more than one nodes and want to distinguish them, give it a name on your own. If you only have one node, leave it empty.
+   - `check_mining_power`: if the mining power of your node is always less than 100%, you may not want to receive the mining power alert frequently, then just set this parameter to `false`. You will only receive alert when `succeeded` is greater than 0.
+
+4. Ensure the script is executable:
 
 ```bash
 chmod +x ./es_bot.sh
