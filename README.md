@@ -41,6 +41,8 @@ chmod +x ./es_bot.sh
 
 ## Cron Job
 
+Google how to use crontab first.
+
 To run `EthStorage-bot` at regular intervals, you can add it to your `crontab`. Here's an example configuration to execute the script every hour:
 
 **# Make sure to replace /path/to/EthStorage-bot/es_bot.sh and /path/to/crontab.log with the actual paths on your system.**
@@ -55,6 +57,10 @@ This setup will run the es_bot.sh script at the 10th minute of every hour, redir
 
 - Mining stats of each run: /path/to/mining_stats.log
 - Crontab log: /path/to/crontab.log
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Support
 
