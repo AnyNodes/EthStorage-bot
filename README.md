@@ -10,10 +10,10 @@ Sends an alert to Telegram when the **mining power** is less than 100%.
 ## Prerequisites
 
 Before using EthStorage-bot, please ensure the following conditions are met:
-
-1. Your node is set up through [Docker](https://docs.ethstorage.io/storage-provider-guide/tutorials#from-a-docker-image).
-2. You have telegram bot token and chat_id. You can get them for free. Google how to.
-3. `jq` and `curl` are installed on your system.
+1. Your node OS is Ubuntu 22.
+2. Your EthStorage node is set up through [Docker](https://docs.ethstorage.io/storage-provider-guide/tutorials#from-a-docker-image).
+3. You have telegram bot token and chat_id. You can get them for free. Google how to.
+4. `jq` and `curl` are installed on your node.
 
     To install `jq` and `curl`:
     
