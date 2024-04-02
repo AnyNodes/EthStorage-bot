@@ -4,7 +4,7 @@
 
 ## Features
 
-Sends an alert to Telegram when the number of successful mining operations (**succeeded**) is greater than 0.
+Sends an alert to Telegram when the number of successful mining operations (**succeeded**) increased.
 Sends an alert to Telegram when the **mining power** is less than 100%.
 
 ## Prerequisites
