@@ -57,14 +57,14 @@ docker logs "$container_name" --since 5m | while read -r line; do
         succeeded=$(echo "$line" | awk -F'succeeded=' '{print $2}' | awk '{print $1}')
         if [[ "$succeeded" -gt "$prev_succeeded" ]]; then
             message="Mining succeeded count increased from $prev_succeeded to $succeeded."
-            [[ -n "$node_name" ]] && message="[$node_name]: $message"
+            [[ -n "$node_name" ]] && message="<$node_name>: $message"
             log_and_send_message "$message"
             stats_message_sent=1
         fi
         echo "$line" >> "$log_file"  # Log "Mining stats" lines
     elif [[ "$line" == *"Mining tasks timed out"* && "$timeout_message_sent" -eq 0 && "$check_mining_power" == "true" ]]; then
         message="Mining power is not 100%"
-        [[ -n "$node_name" ]] && message="[$node_name]: $message"
+        [[ -n "$node_name" ]] && message="<$node_name>: $message"
         log_and_send_message "$message"
         timeout_message_sent=1
         echo "$line" >> "$log_file"  # Log "Mining tasks timed out" lines
