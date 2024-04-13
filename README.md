@@ -1,6 +1,6 @@
 # EthStorage-bot
 
-**EthStorage-bot** is an automated script designed to monitor EthStorage nodes. It sends alerts to Telegram when it detects that the number of successful mining operations exceeds 0 or when the mining power falls below 100%.
+**EthStorage-bot** is an automated script designed to monitor EthStorage nodes. It sends alerts to Telegram when it detects any node status change.
 
 ## Features
 
