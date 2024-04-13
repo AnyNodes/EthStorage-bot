@@ -5,7 +5,9 @@
 ## Features
 
 - Sends an alert to Telegram when the number of successful mining operations (**succeeded**) increased.
+- Sends an alert to Telegram when the number of failed mining operations (**failed**) increased.
 - Sends an alert to Telegram when the **mining power** is less than 100%.
+- Sends an alert to Telegram when docker command stuck.
 
 ## Prerequisites
 
