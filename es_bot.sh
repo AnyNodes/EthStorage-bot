@@ -54,8 +54,8 @@ else
     # check every line
     echo "$log_output" | while read -r line; do
         # pick successed and failed lines
-        local current_succeeded=$(echo "$line" | grep "Mining stats" | tail -1 | awk -F'succeeded=' '{print $2}' | awk '{print $1}')
-        local current_failed=$(echo "$line" | grep "Mining stats" | tail -1 | awk -F'failed=' '{print $2}' | awk '{print $1}')
+        current_succeeded=$(echo "$line" | grep "Mining stats" | tail -1 | awk -F'succeeded=' '{print $2}' | awk '{print $1}')
+        current_failed=$(echo "$line" | grep "Mining stats" | tail -1 | awk -F'failed=' '{print $2}' | awk '{print $1}')
 
         # if need to send succeeded
         if [[ "$current_succeeded" -gt "$prev_succeeded" && "$succeeded_message_sent" -eq 0 ]]; then
