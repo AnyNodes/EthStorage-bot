@@ -83,3 +83,7 @@ else
             echo "$line" >> "$log_file"  # Log "Mining tasks timed out" lines
         fi
     done
+    
+    # export log
+    echo "$log_output" >> "$log_file"
+fi
