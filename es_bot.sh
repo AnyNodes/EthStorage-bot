@@ -25,6 +25,11 @@ telegram_url="https://api.telegram.org/bot$bot_token/sendMessage"
 # Log file path for the mining logs
 log_file="${script_dir}/mining_stats.log"
 
+# Flags to ensure messages are sent only once per script execution
+succeeded_message_sent=0
+failed_message_sent=0
+timeout_message_sent=0
+
 # Read the previous 'succeeded' and 'failed' counts or default to 0 if not available
 prev_succeeded=$(cat "$prev_succeeded_file" 2>/dev/null || echo 0)
 prev_failed=$(cat "$prev_failed_file" 2>/dev/null || echo 0)
@@ -46,21 +51,35 @@ if [[ $? -ne 0 ]]; then
     [[ -n "$node_name" ]] && message="<$node_name>: $message"
     log_and_send_message "$message"
 else
-    current_succeeded=$(echo "$log_output" | grep "Mining stats" | tail -1 | awk -F'succeeded=' '{print $2}' | awk '{print $1}')
-    current_failed=$(echo "$log_output" | grep "Mining stats" | tail -1 | awk -F'failed=' '{print $2}' | awk '{print $1}')
-    echo current_succeeded: $current_succeeded
-    echo current_failed: $current_failed
-    if [[ "$current_succeeded" -gt "$prev_succeeded" ]]; then
-        message="Mining succeeded count increased from $prev_succeeded to $current_succeeded."
-        [[ -n "$node_name" ]] && message="<$node_name>: $message"
-        log_and_send_message "$message"
-        echo "$current_succeeded" > "$prev_succeeded_file"
-    fi
-    if [[ "$current_failed" -gt "$prev_failed" ]]; then
-        message="Mining failed count increased from $prev_failed to $current_failed."
-        [[ -n "$node_name" ]] && message="<$node_name>: $message"
-        log_and_send_message "$message"
-        echo "$current_failed" > "$prev_failed_file"
-    fi
-    echo "$log_output" >> "$log_file"  # Log the entire output
-fi
+    # check every line
+    echo "$log_output" | while read -r line; do
+        # pick successed and failed lines
+        local current_succeeded=$(echo "$line" | grep "Mining stats" | tail -1 | awk -F'succeeded=' '{print $2}' | awk '{print $1}')
+        local current_failed=$(echo "$line" | grep "Mining stats" | tail -1 | awk -F'failed=' '{print $2}' | awk '{print $1}')
+
+        # if need to send succeeded
+        if [[ "$current_succeeded" -gt "$prev_succeeded" && "$succeeded_message_sent" -eq 0 ]]; then
+            message="Mining succeeded count increased from $prev_succeeded to $current_succeeded."
+            [[ -n "$node_name" ]] && message="<$node_name>: $message"
+            log_and_send_message "$message"
+            echo "$current_succeeded" > "$prev_succeeded_file"
+            succeeded_message_sent=1
+        fi
+
+        # if need to send failed
+        if [[ "$current_failed" -gt "$prev_failed" && "$failed_message_sent" -eq 0 ]]; then
+            message="Mining failed count increased from $prev_failed to $current_failed."
+            [[ -n "$node_name" ]] && message="<$node_name>: $message"
+            log_and_send_message "$message"
+            echo "$current_failed" > "$prev_failed_file"
+            failed_message_sent=1
+        fi
+
+        # if need to send minging power
+        if [[ "$line" == *"Mining tasks timed out"* && "$timeout_message_sent" -eq 0 && "$check_mining_power" == "true" ]]; then
+            message="Mining power is not 100%"
+            timeout_message_sent=1
+            log_and_send_message "$message"
+            echo "$line" >> "$log_file"  # Log "Mining tasks timed out" lines
+        fi
+    done
