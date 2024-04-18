@@ -53,7 +53,7 @@ if [[ $? -ne 0 ]]; then
     log_and_send_message "$message"
 else
     # check every line
-    echo "$log_output" | while read -r line; do
+    echo "$log_output" | grep "Mining stats" | while read -r line; do
         # pick successed and failed lines
         current_succeeded=$(echo "$line" | grep "Mining stats" | tail -1 | awk -F'succeeded=' '{print $2}' | awk '{print $1}')
         current_failed=$(echo "$line" | grep "Mining stats" | tail -1 | awk -F'failed=' '{print $2}' | awk '{print $1}')
