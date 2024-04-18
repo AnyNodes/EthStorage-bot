@@ -5,6 +5,7 @@ container_name="es"
 
 # Determine the directory where the script is located
 script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+echo script_dir: $script_dir
 
 # Use the determined script directory to define the path of the config.json
 config_file="${script_dir}/config.json"
@@ -56,7 +57,9 @@ else
         # pick successed and failed lines
         current_succeeded=$(echo "$line" | grep "Mining stats" | tail -1 | awk -F'succeeded=' '{print $2}' | awk '{print $1}')
         current_failed=$(echo "$line" | grep "Mining stats" | tail -1 | awk -F'failed=' '{print $2}' | awk '{print $1}')
-
+        echo current_succeeded: $current_succeeded
+        echo current_failed: $current_failed
+        
         # if need to send succeeded
         if [[ "$current_succeeded" -gt "$prev_succeeded" && "$succeeded_message_sent" -eq 0 ]]; then
             message="Mining succeeded count increased from $prev_succeeded to $current_succeeded."
