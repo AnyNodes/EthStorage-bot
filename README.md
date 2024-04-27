@@ -63,6 +63,18 @@ This setup will run the es_bot.sh script at the 10th minute of every hour, redir
 - Mining stats of each run: /path/to/mining_stats.log
 - Crontab log: /path/to/crontab.log
 
+## Troubleshooting
+
+If `docker logs es` returns this error: `error from daemon in stream: Error grabbing logs: invalid character '\x00' looking for beginning of value`, the es container has probably ever been unexpected stopped or restarted. You need to remove the invalid character from this container log.
+
+```bash
+sudo sed -i 's/\x0//g' "$(docker inspect --format='{{.LogPath}}' <container_name>)"
+```
+The container name for EthStorage node is usually `es`. So the command can be:
+```bash
+sudo sed -i 's/\x0//g' "$(docker inspect --format='{{.LogPath}}' es)"
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
